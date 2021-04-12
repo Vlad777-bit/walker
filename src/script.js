@@ -21,8 +21,24 @@ const player = {
       case 8:
         this.y--;
         break;
+      case 9:
+        this.y--;
+        this.x++;
+        break;
+      case 7:
+        this.y--;
+        this.x--;
+        break;
       case 2:
         this.y++;
+        break;
+      case 3:
+        this.y++;
+        this.x++;
+        break;
+      case 1:
+        this.y++;
+        this.x--;
         break;
       case 4:
         this.x--;
@@ -75,7 +91,7 @@ const game = {
   },
 
   getDirection() {
-    const availableDirections = [-1, 2, 8, 4, 6];
+    const availableDirections = [-1, 2, 8, 4, 6, 9, 7, 3, 1];
 
     while (true) {
       const direction = parseInt(
