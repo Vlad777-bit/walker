@@ -16,37 +16,57 @@ const player = {
     this.y = startY;
   },
 
-  move(direction) {
+  /**
+   * Двигает игрока по переданному направлению.
+   * @param {{x: int, y: int}} nextPoint Следующая точка пользователя.
+   */
+  move(nextPoint) {
+    this.init(nextPoint.x, nextPoint.y);
+  },
+
+  /**
+   * Отдает следующую точку в которой будет находиться пользователь после движения.
+   * @param {int} direction Направление движения игрока.
+   * @returns {{x: int, y: int}} Следующая позиция игрока.
+   */
+  getNextPosition(direction) {
+    const nextPosition = {
+      x: player.x,
+      y: player.y,
+    };
+
     switch (direction) {
       case 8:
-        this.y--;
+        nextPosition.y--;
         break;
       case 9:
-        this.y--;
-        this.x++;
+        nextPosition.y--;
+        nextPosition.x++;
         break;
       case 7:
-        this.y--;
-        this.x--;
+        nextPosition.y--;
+        nextPosition.x--;
         break;
       case 2:
-        this.y++;
+        nextPosition.y++;
         break;
       case 3:
-        this.y++;
-        this.x++;
+        nextPosition.y++;
+        nextPosition.x++;
         break;
       case 1:
-        this.y++;
-        this.x--;
+        nextPosition.y++;
+        nextPosition.x--;
         break;
       case 4:
-        this.x--;
+        nextPosition.x--;
         break;
       case 6:
-        this.x++;
+        nextPosition.x++;
         break;
     }
+
+    return nextPosition;
   },
 };
 
@@ -69,7 +89,11 @@ const game = {
         return alert('До свидания');
       }
 
-      this.player.move(direction);
+      const nextPoint = this.player.getNextPosition(direction);
+
+      if (this.canPlayerMakeStep(nextPoint)) {
+        this.player.move(nextPoint);
+      }
     }
   },
 
@@ -107,6 +131,20 @@ const game = {
       }
       return direction;
     }
+  },
+
+  /**
+   * Проверяет может ли пользователь перейти на точку.
+   * @param {{x: int, y: int}} nextPoint Точка, которую проверяем.
+   * @returns {boolean} true если пользователь может перейти в направлении, false если нет.
+   */
+  canPlayerMakeStep(nextPoint) {
+    return (
+      nextPoint.x >= 0 &&
+      nextPoint.x < settings.colsCount &&
+      nextPoint.y >= 0 &&
+      nextPoint.y < settings.rowsCount
+    );
   },
 };
 
